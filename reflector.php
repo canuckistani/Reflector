@@ -100,10 +100,13 @@ function methodData(ReflectionMethod $method)
 
 END;
 	$args = array();
-	foreach($xml->refsect1->methodsynopsis->methodparam as $param) {
+        if (!is_null($xml->refsect1->methodsynopsis->methodparam)) {
+            foreach($xml->refsect1->methodsynopsis->methodparam as $param) {
 		$out .= " * @param {$param->type} \${$param->parameter}\n";
 		$args[] = "$".$param->parameter;
-	}
+            }
+        }
+	
 	if($return) {
 		$out .= " * @return $return\n";
 	}
