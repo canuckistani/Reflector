@@ -60,7 +60,8 @@ function writeMethod(ReflectionMethod $method, ReflectionClass $class)
 	}
 
 	$data = methodData($method);
-	$params = $data[1];
+	
+	(isset($data[1])) ? $params = $data[1] : $params = array();
 	if(empty($params)) {
 		$refparams = $method->getParameters();
 		if(!empty($refparams)) {
@@ -74,7 +75,11 @@ function writeMethod(ReflectionMethod $method, ReflectionClass $class)
 		}
 	}
 	$params = join(",", $params);
-	return "$data[0]{$func}function {$method->name}($params) {}\n";
+	$ret = "{$func}function {$method->name}($params) {}\n";
+	if (isset($data[0])) {
+		$ret = "$data[0]$ret";
+	}
+	return $ret;
 }
 
 function methodData(ReflectionMethod $method)
